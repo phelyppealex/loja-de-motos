@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Moto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY);
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private boolean deletado;
     @Column(name = "imagem-uri")
