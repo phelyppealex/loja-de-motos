@@ -7,17 +7,16 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario{
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String username;
     private String password;
-    private boolean isAdmin;   
+    private boolean isAdmin;
 }
