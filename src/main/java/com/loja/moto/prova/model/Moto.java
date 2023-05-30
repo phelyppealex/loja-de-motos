@@ -37,4 +37,8 @@ public class Moto {
     private String preco;
     private boolean nova;
     private int quilometragem;
+
+    public void setDate(Date deletato){
+        this.deletado = deletato;
+    }
 }

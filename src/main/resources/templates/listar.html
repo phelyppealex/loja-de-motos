@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Motos a venda</title>
+    <div th:replace="~{fragments/fragments :: bootstrap-css}"></div>
+
+</head>
+<body>
+    <div th:replace="~{fragments/fragments :: navbar}"></div>
+    <div th:replace="~{fragments/fragments :: header}"></div>
+
+    <ul>
+        <li th:each="m : ${motos}">
+            <span th:text="${m.modelo}"></span>
+            <span th:text="${m.ano}"></span>
+            <span th:text="${m.placa}"></span>
+            <span th:text="${m.cor}"></span>
+            <span th:text="${m.localidade}"></span>
+            <span th:text="${m.preco}"></span>
+            <a th:href="@{'/editarMoto/'+ ${m.id}}">Editar</a>
+        </li>
+    </ul>
+
+    <div th:replace="~{fragments/fragments :: footer}"></div>
+    <div th:replace="~{fragments/fragments :: bootstrap-js1}"></div>
+    <div th:replace="~{fragments/fragments :: bootstrap-js2}"></div>
+</body>
+</html>

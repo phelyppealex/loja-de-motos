@@ -23,10 +23,14 @@ public class MotoService {
     }
 
     public void delete(Integer id){
-        Moto moto = findById(id);
-        moto.setDate(new Date());
-        repository.deleteById(id);
-        save(moto);
+        Optional<Moto> opMoto = findById(id);
+
+        if(opMoto.isPresent()){
+            Moto moto = opMoto.get();
+            moto.setDate(new Date());
+            repository.deleteById(id);
+            save(moto);
+        }
     }
 
     public List<Moto> findAll(){
@@ -37,5 +41,9 @@ public class MotoService {
         Optional<Moto> moto = repository.findById(id);
 
         return moto;
+    }
+
+    public void editar(Moto moto){
+        moto.
     }
 }

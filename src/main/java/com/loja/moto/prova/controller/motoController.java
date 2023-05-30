@@ -2,13 +2,16 @@ package com.loja.moto.prova.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.loja.moto.prova.model.Moto;
 import com.loja.moto.prova.service.MotoService;
@@ -45,7 +48,22 @@ public class MotoController {
         return "redirect:/";
     }
 
-    
+    @GetMapping("/listarMotos")
+    public String listar(Model model){
+        List<Moto> motos = service.findAll();
+        model.addAttribute("motos", motos);
+        return "listar";
+    }
 
-    
+    @GetMapping("/editarMoto/{id}")
+    public String editar(@PathVariable(name = "id") String identificador, Model model){
+        Integer id = Integer.parseInt(identificador);
+        Optional<Moto> moto = service.findById(id);
+
+        if(moto.isPresent()){
+            model.addAttribute("moto", moto);
+            return "/";
+        }
+        return "redirect:/";
+    }
 }

@@ -6,7 +6,7 @@ spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/moto
         username: postgres
-        password: 1412
+        password: 123
     jpa:
         properties:
             hibernate:
