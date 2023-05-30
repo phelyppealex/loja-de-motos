@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -31,9 +32,7 @@ public class Moto {
     @NotBlank
     private String cor;
     @NotBlank
-    private String preço;
-    @NotBlank
+    private String preco;
     private boolean nova;
-    @NotBlank
     private int quilometragem;
 }
