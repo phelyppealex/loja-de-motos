@@ -1,5 +1,6 @@
 package com.loja.moto.prova.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,10 @@ public class MotoService {
     }
 
     public void delete(Integer id){
+        Moto moto = findById(id);
+        moto.setDate(new Date());
         repository.deleteById(id);
+        save(moto);
     }
 
     public List<Moto> findAll(){

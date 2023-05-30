@@ -1,5 +1,7 @@
 package com.loja.moto.prova.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ public class Moto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private boolean deletado;
+    private Date deletado;
     @Column(name = "imagem-uri")
     private String imagemURI;
     @NotBlank
