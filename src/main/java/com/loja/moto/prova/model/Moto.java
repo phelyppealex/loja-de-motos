@@ -25,12 +25,15 @@ public class Moto {
     private String modelo;
     @NotBlank
     private String ano;
-    @NotBlank
     private String placa;
     @NotBlank
-    private String chassi;
+    private String localidade;
     @NotBlank
     private String cor;
     @NotBlank
     private String preço;
+    @NotBlank
+    private boolean nova;
+    @NotBlank
+    private int quilometragem;
 }
