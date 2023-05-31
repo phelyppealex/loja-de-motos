@@ -42,8 +42,5 @@ public class MotoService {
 
         return moto;
     }
-
-    public void editar(Moto moto){
-        moto.
-    }
+    
 }
