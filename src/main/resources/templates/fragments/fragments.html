@@ -7,7 +7,7 @@
     
     <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#!"><b>BR-MOTOS</b></a>
+            <a class="navbar-brand" href="/"><b>BR-MOTOS</b></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </nav>
-
+    
     <header th:fragment="header" class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
@@ -40,7 +40,7 @@
                 <div class="col mb-5" th:each="m : ${motos}">
                     
                     <div class="card h-70 ">
-                        <img class="card-img-top" src="https://www.honda.com.br/motos/sites/hda/files/2022-03/XRE-300-Adventure-Cinza.webp" alt="Moto" />
+                        <img class="card-img-top" th:source="@{'/images/'+${imagemURI}}" alt="Moto" />
                         <hr class="linha">
                         <div class="card-body p-4">
                             <div class="text-center">

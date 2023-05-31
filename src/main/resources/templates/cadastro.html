@@ -29,7 +29,7 @@
     <div th:replace="~{fragments/fragments :: header}"></div>
 
     <h1>Cadastrar Moto</h1>
-    <form th:action="@{/cadastrar}" th:object="${moto}" method="POST">
+    <form th:action="@{/cadastrar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
         Modelo:<input type="text" th:field="*{modelo}"/></br>
         Placa:<input type="text" th:field="*{placa}"/></br>
         Ano:<input type="text" th:field="*{ano}"/></br>
@@ -38,7 +38,7 @@
         <span class="usada">Quilometragem:</span><input type="text" id="km" th:field="*{quilometragem}" value="0"/></br>
         Localidade:<input type="text" th:field="*{localidade}"/></br>
         Preço:<input type="text" th:field="*{preco}"/></br>
-        Imagem:<input type="file" th:field="*{imagemURI}"/></br>
+        Imagem:<input type="file" name="file"/></br>
 
         <button type="submit">Postar</button>
     </form>

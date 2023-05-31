@@ -3,7 +3,6 @@ package com.loja.moto.prova.controller;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,17 +11,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.loja.moto.prova.model.Moto;
+import com.loja.moto.prova.service.FileStorageService;
 import com.loja.moto.prova.service.MotoService;
 
 
 @Controller
 public class MotoController {
-
+    private FileStorageService fileStorageService;
     private MotoService service;
 
-    public MotoController(MotoService service) {
+    public MotoController(FileStorageService fileStorageService, MotoService service) {
+        this.fileStorageService = fileStorageService;
         this.service = service;
     }
 
@@ -41,7 +41,11 @@ public class MotoController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, Model model){
+    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova,
+                            @RequestParam(name = "file") MultipartFile file){
+
+        moto.setImagemURI(file.getOriginalFilename());
+        this.fileStorageService.save(file);
         moto.setNova(!chk_nova);
         service.save(moto);
 
