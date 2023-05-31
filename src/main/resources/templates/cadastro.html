@@ -4,48 +4,63 @@
     <meta charset="UTF-8"/>
     <title>Adicionar Motos</title>
     <div th:replace="~{fragments/fragments :: bootstrap-css}"></div>
-
-    <style>
-        .linha{
-            border: 1px solid #000000;
-        }
-        #km{
-            display: none;
-        }
-        .usada{
-            display: none;
-        }
-        #check:checked ~ #km {
-            display: block;
-        }
-        #check:checked ~ .usada {
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/cadastro.css">
 
 </head>
 <body>
     <div th:replace="~{fragments/fragments :: navbar}"></div>
     <div th:replace="~{fragments/fragments :: header}"></div>
 
-    <h1>Cadastrar Moto</h1>
-    <form th:action="@{/cadastrar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
-        Modelo:<input type="text" th:field="*{modelo}"/></br>
-        Placa:<input type="text" th:field="*{placa}"/></br>
-        Ano:<input type="text" th:field="*{ano}"/></br>
-        Cor:<input type="text" th:field="*{cor}"/></br>
-        <input type="checkbox" name="chk_nova" id="check"> <label for="check">Usada</label> </br>
-        <span class="usada">Quilometragem:</span><input type="text" id="km" th:field="*{quilometragem}" value="0"/></br>
-        Localidade:<input type="text" th:field="*{localidade}"/></br>
-        Preço:<input type="text" th:field="*{preco}"/></br>
-        Imagem:<input type="file" name="file"/></br>
 
-        <button type="submit">Postar</button>
+    <form class="formulario" th:action="@{/cadastrar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
+        <h1>Cadastrar Moto</h1>
+
+        <table>
+            <tr>
+                <td class="coluna1"><label for="modelo">Modelo</label></td>
+                <td><input id="modelo" type="text" th:field="*{modelo}" placeholder="Ex.: Fan 150cc"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="placa">Placa</label></td>
+                <td><input id="placa" type="text" th:field="*{placa}" placeholder="Ex.: XXX-XXXX"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="ano">Ano</label></td>
+                <td><input id="ano" type="text" th:field="*{ano}" placeholder="Ex.: 2008"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="cor">Cor</label></td>
+                <td><input id="cor" type="text" th:field="*{cor}" placeholder="Ex.: Preta"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><input type="checkbox" onclick="mostrarKM()" name="chk_nova" id="check"></td>
+                <td><label for="check">Usada</label></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="km" class="usada">Quilometragem</label></td>
+                <td><input type="text" th:field="*{quilometragem}" placeholder="Ex.: 5.000km" class="usada"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="localidade">Localidade</label></td>
+                <td><input id="localidade" type="text" th:field="*{localidade}" placeholder="Ex.: Lagoa Seca - Natal/RN"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="preco">Preço</label></td>
+                <td><input id="preco" type="text" th:field="*{preco}" placeholder="Ex.: 7500"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="imagem">Imagem:</label></td>
+                <td><input id="imagem" name="file" type="file"/></td>
+            </tr>
+        </table>
+        
+        <button class="botao" type="submit">Postar</button>
     </form>
 
     <div th:replace="~{fragments/fragments :: footer}"></div>
 
     <div th:replace="~{fragments/fragments :: bootstrap-js1}"></div>
     <div th:replace="~{fragments/fragments :: bootstrap-js2}"></div>
+    <script src="/scripts/cadastro.js"></script>
 </body>
 </html>
