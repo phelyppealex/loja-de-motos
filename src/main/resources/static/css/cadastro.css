@@ -1,0 +1,56 @@
+.formulario{
+    text-align: center;
+    margin: 30px 0;
+}
+.formulario table{
+    margin: 0 auto 0 auto;
+    padding: 50px;
+}
+
+table tr td {
+    text-align: left;
+}
+
+.coluna1{
+    text-align: right;
+    padding-right: 12px;
+}
+
+.usada{
+    display: none;
+}
+
+.botao{
+    border: 1px solid black;
+    color: black;
+    outline: none;
+    background-color: white;
+    border-radius: 8px;
+    margin: 20px;
+    transition: .25s;
+    padding: 5px 10px;
+}
+
+.botao:hover{
+    border: 1px solid black;
+    color: white;
+    background-color: rgb(33,37,41);
+}
+
+input[type="file"]{
+    font-size: 11px;
+}
+
+input[type="text"]{
+    border: 2px solid rgb(33,37,41);
+    border-radius: 8px;
+    transition: .25s;
+}
+
+input[type="text"]:hover{
+    border: 2px solid rgb(64, 143, 207);
+}
+
+input[type="text"]:focus{
+    border: 2px solid rgb(0, 152, 15);
+}
