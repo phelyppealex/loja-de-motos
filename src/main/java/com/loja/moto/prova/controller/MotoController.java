@@ -46,8 +46,8 @@ public class MotoController {
         return "cadastro";
     }
 
-    @PostMapping("/cadastrar")
-    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file){
+    @PostMapping("/salvar")
+    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file, Model model){
         
         Date d = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
@@ -62,7 +62,7 @@ public class MotoController {
 
         this.fileStorageService.save(file, dataUpload);
 
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin")

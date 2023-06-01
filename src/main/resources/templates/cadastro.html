@@ -12,7 +12,7 @@
     <div th:replace="~{fragments/fragments :: header}"></div>
 
 
-    <form class="formulario" th:action="@{/cadastrar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
+    <form class="formulario" th:action="@{/salvar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
         <h1>Cadastrar Moto</h1>
 
         <table>
