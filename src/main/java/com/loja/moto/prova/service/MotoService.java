@@ -19,7 +19,12 @@ public class MotoService {
     }
 
     public void save(Moto moto){
-        repository.save(moto);
+        this.repository.save(moto);
+    }
+
+    public void update(Moto moto){
+        this.repository.deleteById(moto.getId());
+        save(moto);
     }
 
     public void delete(Integer id){
@@ -28,18 +33,17 @@ public class MotoService {
         if(opMoto.isPresent()){
             Moto moto = opMoto.get();
             moto.setDate(new Date());
-            repository.deleteById(id);
+            this.repository.deleteById(id);
             save(moto);
         }
     }
 
     public List<Moto> findAll(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Moto> findById(Integer id){
-        Optional<Moto> moto = repository.findById(id);
-
+        Optional<Moto> moto = this.repository.findById(id);
         return moto;
     }
     

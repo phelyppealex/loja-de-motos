@@ -61,22 +61,38 @@ public class MotoController {
         return "redirect:/";
     }
 
-    @GetMapping("/listarMotos")
-    public String listar(Model model){
+    @GetMapping("/admin/listarMotos")
+    public String rootListar(Model model){
         List<Moto> motos = service.findAll();
         model.addAttribute("motos", motos);
         return "listar";
     }
 
-    @GetMapping("/editarMoto/{id}")
-    public String editar(@PathVariable(name = "id") String identificador, Model model){
-        Integer id = Integer.parseInt(identificador);
+    @GetMapping("/admin/editarCadastro/{id}")
+    public String editarCadastro(@PathVariable(name = "id") Integer id, Model model){
         Optional<Moto> moto = service.findById(id);
 
         if(moto.isPresent()){
-            model.addAttribute("moto", moto);
-            return "/";
+            model.addAttribute("moto", moto.get());
+            return "editar";
         }
-        return "redirect:/";
+        return "redirect:/admin/listarMotos";
+    }
+
+    @PostMapping("/admin/editar")
+    public String editar(@ModelAttribute Moto moto){
+        this.service.update(moto);
+        return "redirect:/admin/listarMotos";
+    }
+
+    @GetMapping("/admin/deletar/{id}")
+    public String editar(@PathVariable(name = "id") Integer id){
+        Optional<Moto> m = service.findById(id);
+
+        if(m.isPresent()){
+            Moto moto = m.get();
+            this.service.delete(id);
+        }
+        return "redirect:/admin/listarMotos";
     }
 }

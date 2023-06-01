@@ -37,7 +37,7 @@
     <section th:fragment="section" class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <div class="col mb-5" th:each="m : ${motos}" th:object="${m}">
+                <div class="col mb-5" th:if="${m.deletado} == null" th:each="m : ${motos}" th:object="${m}">
                     <div class="card h-70 ">
                         <img class="card-img-top" th:src="@{'/images/'+ *{imagemURI}}" alt="Moto" />
                         <hr class="linha">
@@ -54,7 +54,6 @@
                                 Preço
                                 <h3 th:text="${'R$ ' + m.preco}"></h3>
                             </div>
-                            
                         </div>
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Adicionar ao Carrinho</a></div>

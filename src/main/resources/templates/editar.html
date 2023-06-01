@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Motos a venda</title>
+    <div th:replace="~{fragments/fragments :: bootstrap-css}"></div>
+
+    <link rel="stylesheet" href="/css/cadastro.css">
+</head>
+<body>
+    <div th:replace="~{fragments/fragments :: navbar}"></div>
+    <div th:replace="~{fragments/fragments :: header}"></div>
+    
+    <form class="formulario" th:action="@{/admin/editar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
+        <h1>Editar cadastro</h1>
+        
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{imagemURI}">
+
+        <table>
+            <tr>
+                <td class="coluna1"><label for="modelo">Modelo</label></td>
+                <td><input id="modelo" type="text" th:field="*{modelo}" placeholder="Ex.: Fan 150cc"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="placa">Placa</label></td>
+                <td><input id="placa" type="text" th:field="*{placa}" placeholder="Ex.: XXX-XXXX"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="ano">Ano</label></td>
+                <td><input id="ano" type="text" th:field="*{ano}" placeholder="Ex.: 2008"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="cor">Cor</label></td>
+                <td><input id="cor" type="text" th:field="*{cor}" placeholder="Ex.: Preta"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><input type="checkbox" onclick="mostrarKM()" name="chk_nova" id="check"></td>
+                <td><label for="check">Usada</label></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="km" class="usada">Quilometragem</label></td>
+                <td><input type="text" th:field="*{quilometragem}" placeholder="Ex.: 5.000km" class="usada"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="localidade">Localidade</label></td>
+                <td><input id="localidade" type="text" th:field="*{localidade}" placeholder="Ex.: Lagoa Seca - Natal/RN"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="preco">Preço</label></td>
+                <td><input id="preco" type="text" th:field="*{preco}" placeholder="Ex.: 7500"/></td>
+            </tr>
+        </table>
+        
+        <button class="botao" type="submit">Postar</button>
+    </form>
+
+    <div th:replace="~{fragments/fragments :: footer}"></div>
+    <div th:replace="~{fragments/fragments :: bootstrap-js1}"></div>
+    <div th:replace="~{fragments/fragments :: bootstrap-js2}"></div>
+</body>
+</html>
