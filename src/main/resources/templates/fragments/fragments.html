@@ -15,7 +15,7 @@
                     <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/cadastro}">Cadastrar</a></li>
                 </ul>
                 <form class="d-flex">
-                    <a href="@{/verCarrinho}" class="btn btn-outline-dark" type="submit">
+                    <a th:href="@{/verCarrinho}" class="btn btn-outline-dark" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Carrinho
                         <span class="badge bg-dark text-white ms-1 rounded-pill" th:if="${itensCarrinho} != null" th:text="${itensCarrinho.size()}">0</span>
