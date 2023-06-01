@@ -1,6 +1,8 @@
 package com.loja.moto.prova.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Controller;
@@ -41,13 +43,20 @@ public class MotoController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova,
-                            @RequestParam(name = "file") MultipartFile file){
+    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file){
+        
+        Date d = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
 
-        moto.setImagemURI(file.getOriginalFilename());
-        this.fileStorageService.save(file);
+        String dataUpload = formato.format(d);
+        dataUpload = dataUpload.replaceAll("/", "_");
+        dataUpload = dataUpload.replaceAll(":", "_");
+
+        moto.setImagemURI(dataUpload + file.getOriginalFilename());
         moto.setNova(!chk_nova);
         service.save(moto);
+
+        this.fileStorageService.save(file, dataUpload);
 
         return "redirect:/";
     }
