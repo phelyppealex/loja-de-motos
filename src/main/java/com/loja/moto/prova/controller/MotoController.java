@@ -39,15 +39,15 @@ public class MotoController {
         return "index";
     }
 
-    @GetMapping("/cadastro")
+    @GetMapping("/admin/cadastro")
     public String cadastro(Model model){
         Moto moto = new Moto();
         model.addAttribute("moto", moto);
         return "cadastro";
     }
 
-    @PostMapping("/cadastrar")
-    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file){
+    @PostMapping("/salvar")
+    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file, Model model){
         
         Date d = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
@@ -62,10 +62,10 @@ public class MotoController {
 
         this.fileStorageService.save(file, dataUpload);
 
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/admin/listarMotos")
+    @GetMapping("/admin")
     public String rootListar(Model model){
         List<Moto> motos = service.findAll();
         model.addAttribute("motos", motos);
@@ -80,13 +80,13 @@ public class MotoController {
             model.addAttribute("moto", moto.get());
             return "editar";
         }
-        return "redirect:/admin/listarMotos";
+        return "redirect:/admin";
     }
 
     @PostMapping("/admin/editar")
     public String editar(@ModelAttribute Moto moto){
         this.service.update(moto);
-        return "redirect:/admin/listarMotos";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/deletar/{id}")
@@ -96,7 +96,7 @@ public class MotoController {
         if(m.isPresent()){
             this.service.delete(id);
         }
-        return "redirect:/admin/listarMotos";
+        return "redirect:/admin";
     }
 
     @GetMapping("/adicionarCarrinho/{id}")
