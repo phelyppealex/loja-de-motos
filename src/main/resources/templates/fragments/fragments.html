@@ -15,11 +15,11 @@
                     <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/cadastro}">Cadastrar</a></li>
                 </ul>
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
+                    <a href="@{/verCarrinho}" class="btn btn-outline-dark" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Carrinho
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" th:if="${itensCarrinho} != null" th:text="${itensCarrinho.size()}">0</span>
+                    </a>
                 </form>
             </div>
         </div>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Adicionar ao Carrinho</a></div>
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{'/adicionarCarrinho/' + ${m.id}}">Adicionar ao Carrinho</a></div>
                         </div>
                     </div>
                 </div>

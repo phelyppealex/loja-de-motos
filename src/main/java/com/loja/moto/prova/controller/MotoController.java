@@ -2,6 +2,7 @@ package com.loja.moto.prova.controller;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,16 +23,19 @@ import com.loja.moto.prova.service.MotoService;
 public class MotoController {
     private FileStorageService fileStorageService;
     private MotoService service;
+    private List<Moto> carrinho;
 
     public MotoController(FileStorageService fileStorageService, MotoService service) {
         this.fileStorageService = fileStorageService;
         this.service = service;
+        this.carrinho = new ArrayList<Moto>();
     }
 
-    @GetMapping("/")
+    @GetMapping({"/","index"})
     public String home(Model model){
         List<Moto> motos = service.findAll();
         model.addAttribute("motos", motos);
+        model.addAttribute("itensCarrinho", carrinho);
         return "index";
     }
 
@@ -90,9 +94,26 @@ public class MotoController {
         Optional<Moto> m = service.findById(id);
 
         if(m.isPresent()){
-            Moto moto = m.get();
             this.service.delete(id);
         }
         return "redirect:/admin/listarMotos";
     }
+
+    @GetMapping("/adicionarCarrinho/{id}")
+    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model) {
+        Optional<Moto> moto = service.findById(id);
+
+        if(moto.isPresent()){
+            carrinho.add(moto.get());
+            model.addAttribute("itensCarrinho", carrinho);
+        }
+        return "index";
+    }
+
+    @GetMapping("/verCarrinho")
+    public String verCarrinho(Model model){
+        model.addAttribute("itensCarrinho", carrinho);
+        return "carrinho";
+    }
+    
 }
