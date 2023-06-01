@@ -39,7 +39,7 @@ public class MotoController {
         return "index";
     }
 
-    @GetMapping("/cadastro")
+    @GetMapping("/admin/cadastro")
     public String cadastro(Model model){
         Moto moto = new Moto();
         model.addAttribute("moto", moto);
@@ -65,7 +65,7 @@ public class MotoController {
         return "redirect:/";
     }
 
-    @GetMapping("/admin/listarMotos")
+    @GetMapping("/admin")
     public String rootListar(Model model){
         List<Moto> motos = service.findAll();
         model.addAttribute("motos", motos);
@@ -80,13 +80,13 @@ public class MotoController {
             model.addAttribute("moto", moto.get());
             return "editar";
         }
-        return "redirect:/admin/listarMotos";
+        return "redirect:/admin";
     }
 
     @PostMapping("/admin/editar")
     public String editar(@ModelAttribute Moto moto){
         this.service.update(moto);
-        return "redirect:/admin/listarMotos";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/deletar/{id}")
@@ -96,7 +96,7 @@ public class MotoController {
         if(m.isPresent()){
             this.service.delete(id);
         }
-        return "redirect:/admin/listarMotos";
+        return "redirect:/admin";
     }
 
     @GetMapping("/adicionarCarrinho/{id}")
