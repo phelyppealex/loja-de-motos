@@ -9,12 +9,12 @@
     <div th:replace="~{fragments/fragments :: navbar}"></div>
     <div th:replace="~{fragments/fragments :: header}"></div>
 
-    <h1 th:if="${mensagem} != null" th:text="${mensagem}"></h1>
+    <h4 th:if="${mensagem} != null" th:text="${mensagem}" style="text-align: center;"></h4>
 
     <section th:fragment="listar" class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <div class="col mb-5" th:each="m : ${motos}" th:object="${m}">
+                <div class="col mb-5" th:each="m : ${motos}" th:if="${m.deletado} == null" th:object="${m}">
                     <div class="card h-70 ">
                         <img class="card-img-top" th:src="@{'/images/'+ *{imagemURI}}" alt="Moto" />
                         <hr class="linha">

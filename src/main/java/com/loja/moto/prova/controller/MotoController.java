@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +23,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
+@Validated
 public class MotoController {
     private FileStorageService fileStorageService;
     private MotoService service;
@@ -38,7 +42,6 @@ public class MotoController {
         sessao = request.getSession();
 
         model.addAttribute("motos", motos);
-        model.addAttribute("mensagem", null);
         if(sessao.getAttribute("carrinho") != null){
             model.addAttribute(
                 "itensCarrinho",
@@ -56,25 +59,31 @@ public class MotoController {
     }
 
     @PostMapping("/salvar")
-    public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file, Model model){
+    public String cadastrar(@ModelAttribute @Valid Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file, Model model, Errors errors) {
+
+        if(errors.hasErrors())return "redirect:/index";
+        
         String dataUpload = getData(new Date());
         
         dataUpload = dataUpload.replaceAll("/", "_");
         dataUpload = dataUpload.replaceAll(":", "_");
-
-        if(file != null)
+        
+        if(file != null){
             moto.setImagemURI(dataUpload + file.getOriginalFilename());
+            this.fileStorageService.save(file, dataUpload);
+        }
         
         moto.setNova(!chk_nova);
         
         if(moto.getId() != null){
             service.update(moto);
-            return "/admin";
+            List<Moto> motos = service.findAll();
+            model.addAttribute("motos", motos);
+            model.addAttribute("mensagem", "A atualização ocorreu com Sucesso");
+            return "listar";
         }
         
         service.save(moto);
-
-        this.fileStorageService.save(file, dataUpload);
 
         return "redirect:/admin";
     }
