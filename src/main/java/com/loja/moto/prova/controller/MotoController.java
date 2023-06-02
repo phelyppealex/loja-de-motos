@@ -16,7 +16,10 @@ import com.loja.moto.prova.model.Moto;
 import com.loja.moto.prova.service.FileStorageService;
 import com.loja.moto.prova.service.MotoService;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -31,7 +34,7 @@ public class MotoController {
 
     @GetMapping({"/","index"})
     public String home(Model model, HttpSession sessao, HttpServletRequest request){
-        List<Moto> motos = service.findAll();
+        List<Moto> motos = this.service.findAll();
         sessao = request.getSession();
 
         model.addAttribute("motos", motos);
@@ -53,10 +56,7 @@ public class MotoController {
 
     @PostMapping("/salvar")
     public String cadastrar(@ModelAttribute Moto moto, @RequestParam(name = "chk_nova", required = false) boolean chk_nova, @RequestParam(name = "file") MultipartFile file, Model model){
-        Date d = new Date();
-        
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
-        String dataUpload = formato.format(d);
+        String dataUpload = getData(new Date());
         
         dataUpload = dataUpload.replaceAll("/", "_");
         dataUpload = dataUpload.replaceAll(":", "_");
@@ -104,7 +104,7 @@ public class MotoController {
     }
 
     @GetMapping("/adicionarCarrinho/{id}")
-    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model, HttpSession sessao, HttpServletRequest request) throws Exception {
+    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model, HttpSession sessao, HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<Moto> motos;
         Moto moto = this.service.findById(id);
         sessao = request.getSession();
@@ -127,14 +127,50 @@ public class MotoController {
     }
 
     @GetMapping("/verCarrinho")
-    public String verCarrinho(Model model, HttpSession sessao, HttpServletRequest request){
+    public String verCarrinho(Model model, HttpSession sessao, HttpServletRequest request, HttpServletResponse response){
         sessao = request.getSession();
+        criarCoockie(response);
 
+        if(sessao.getAttribute("carrinho") == null){
+            List<Moto> motos = service.findAll();
+            model.addAttribute("motos", motos);
+            model.addAttribute("mensagem", "Não existe item no carrinho");
+            return "index";
+        }
+        
         model.addAttribute(
             "itensCarrinho",
             sessao.getAttribute("carrinho")
         );
+        
         return "carrinho";
     }
+
+    @PostMapping("/finalizarCompra")
+    public String finalizarCompra(HttpSession sessao, HttpServletRequest request, Model model){
+        sessao = request.getSession();
+        List<Moto> motosCarrinho = (List)sessao.getAttribute("carrinho");
+        
+        for(Moto m : motosCarrinho){
+            m.setDate(new Date());
+            this.service.update(m);
+        }
+
+        sessao.invalidate();
+
+        List<Moto> motos = this.service.findAll();
+        model.addAttribute("motos", motos);
+        return "index";
+    }
     
+    public String getData(Date d){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
+        return formato.format(d);
+    }
+
+    public void criarCoockie(HttpServletResponse response){
+        Cookie c = new Cookie("visita", getData(new Date()));
+        c.setMaxAge(60*60*24);
+        response.addCookie(c);
+    }
 }
