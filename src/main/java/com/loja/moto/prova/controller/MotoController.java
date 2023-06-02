@@ -24,17 +24,23 @@ public class MotoController {
     private FileStorageService fileStorageService;
     private MotoService service;
 
-    public MotoController(FileStorageService fileStorageService, MotoService service, HttpServletRequest request) {
+    public MotoController(FileStorageService fileStorageService, MotoService service) {
         this.fileStorageService = fileStorageService;
         this.service = service;
     }
 
     @GetMapping({"/","index"})
-    public String home(Model model){
+    public String home(Model model, HttpSession sessao, HttpServletRequest request){
         List<Moto> motos = service.findAll();
-        model.addAttribute("motos", motos);
+        sessao = request.getSession();
 
-        model.addAttribute("itensCarrinho");
+        model.addAttribute("motos", motos);
+        if(sessao.getAttribute("carrinho") != null){
+            model.addAttribute(
+                "itensCarrinho",
+                sessao.getAttribute("carrinho")
+            );
+        }
         return "index";
     }
 
@@ -73,12 +79,12 @@ public class MotoController {
     }
 
     @GetMapping("/admin")
-    public String rootListar(Model model, HttpServletRequest request, HttpSession sessao){
+    public String rootListar(Model model, HttpSession sessao, HttpServletRequest request){
         sessao = request.getSession();
         List<Moto> motos = service.findAll();
         
         model.addAttribute("motos", motos);
-        model.addAttribute("itensCarrinho",sessao.getAttribute("carrinho"));
+        model.addAttribute("itensCarrinho", sessao.getAttribute("carrinho"));
         
         return "listar";
     }
@@ -98,7 +104,7 @@ public class MotoController {
     }
 
     @GetMapping("/adicionarCarrinho/{id}")
-    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model, HttpServletRequest request, HttpSession sessao) throws Exception {
+    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model, HttpSession sessao, HttpServletRequest request) throws Exception {
         List<Moto> motos;
         Moto moto = this.service.findById(id);
         sessao = request.getSession();
@@ -121,8 +127,9 @@ public class MotoController {
     }
 
     @GetMapping("/verCarrinho")
-    public String verCarrinho(Model model, HttpServletRequest request, HttpSession sessao){
+    public String verCarrinho(Model model, HttpSession sessao, HttpServletRequest request){
         sessao = request.getSession();
+
         model.addAttribute(
             "itensCarrinho",
             sessao.getAttribute("carrinho")
