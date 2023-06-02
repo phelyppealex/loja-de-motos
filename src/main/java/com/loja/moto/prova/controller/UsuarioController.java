@@ -38,12 +38,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/listUsuarios")
-    public String listAll(){
+    public String listAll(Model model){
         List<Usuario> usuarios = service.findAll();
-        for (Usuario u : usuarios){
-            System.out.println(u);
-        }
-
+        model.addAttribute("usuarios", usuarios);
         return "listUsuarios";
     }
 

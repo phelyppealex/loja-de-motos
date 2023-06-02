@@ -9,7 +9,28 @@
 <body>
     <div th:replace="~{fragments/fragments :: navbar}"></div>
     <div th:replace="~{fragments/fragments :: header}"></div>
-    <div th:replace="~{fragments/fragments :: section}"></div>
+
+    <h1>Lista de Usuários</h1>
+
+    <table border="1">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                LOGIN
+            </th>
+            <th>
+                ADMIN
+            </th>
+        </tr>
+        <tr th:each="u : ${usuarios}">
+            <td th:text="*{id}"></td>
+            <td th:text="*{username}"></td>
+            <td th:text="*{isAdmin}"></td>
+        </tr>
+    </table>
+    
     <div th:replace="~{fragments/fragments :: footer}"></div>
     <div th:replace="~{fragments/fragments :: bootstrap-js1}"></div>
     <div th:replace="~{fragments/fragments :: bootstrap-js2}"></div>
