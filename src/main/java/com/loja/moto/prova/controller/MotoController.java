@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -75,14 +74,11 @@ public class MotoController {
     }
 
     @GetMapping("/admin/editarCadastro/{id}")
-    public String editarCadastro(@PathVariable(name = "id") Integer id, Model model){
-        Optional<Moto> moto = service.findById(id);
+    public String editarCadastro(@PathVariable(name = "id") Integer id, Model model) throws Exception{
+        Moto moto = this.service.findById(id);
 
-        if(moto.isPresent()){
-            model.addAttribute("moto", moto.get());
-            return "editar";
-        }
-        return "redirect:/admin";
+        model.addAttribute("moto", moto);
+        return "editar";
     }
 
     @PostMapping("/admin/editar")
@@ -92,23 +88,19 @@ public class MotoController {
     }
 
     @GetMapping("/admin/deletar/{id}")
-    public String editar(@PathVariable(name = "id") Integer id){
-        Optional<Moto> m = service.findById(id);
+    public String editar(@PathVariable(name = "id") Integer id) throws Exception{
 
-        if(m.isPresent()){
-            this.service.delete(id);
-        }
+        this.service.delete(id);
+        
         return "redirect:/admin";
     }
 
     @GetMapping("/adicionarCarrinho/{id}")
-    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model) {
-        Optional<Moto> moto = service.findById(id);
+    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model) throws Exception {
+        Moto moto = service.findById(id);
 
-        if(moto.isPresent()){
-            carrinho.add(moto.get());
-            model.addAttribute("itensCarrinho", carrinho);
-        }
+        carrinho.add(moto);
+        model.addAttribute("itensCarrinho", carrinho);
         return "index";
     }
 

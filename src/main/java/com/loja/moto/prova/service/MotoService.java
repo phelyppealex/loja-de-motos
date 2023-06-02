@@ -27,24 +27,26 @@ public class MotoService {
         save(moto);
     }
 
-    public void delete(Integer id){
-        Optional<Moto> opMoto = findById(id);
+    public void delete(Integer id) throws Exception {
+        Moto moto = findById(id);
+        moto.setDeletado(new Date());
 
-        if(opMoto.isPresent()){
-            Moto moto = opMoto.get();
-            moto.setDate(new Date());
-            this.repository.deleteById(id);
-            save(moto);
-        }
+        this.repository.deleteById(id);
+        save(moto);
     }
 
     public List<Moto> findAll(){
         return this.repository.findAll();
     }
 
-    public Optional<Moto> findById(Integer id){
+    public Moto findById(Integer id) throws Exception {
         Optional<Moto> moto = this.repository.findById(id);
-        return moto;
+        
+        if(moto.isPresent()){
+            return moto.get();
+        } else{
+            throw new Exception("Moto não encontrada");
+        }
     }
     
 }
