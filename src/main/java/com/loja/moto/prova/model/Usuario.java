@@ -1,7 +1,5 @@
 package com.loja.moto.prova.model;
 
-import java.util.Collection;
-import java.util.Collections;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

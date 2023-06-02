@@ -51,7 +51,8 @@
                                     <div class="bi-star-fill"></div>
                                     <div class="bi-star-fill"></div>
                                 </div>
-                                Preço
+                                <h6 th:if="${m.nova}">Nova</h6>
+                                <h6 th:if="${!m.nova}" th:text="${'Usada - ' + m.quilometragem + ' km'}"></h6>
                                 <h3 th:text="${'R$ ' + m.preco}"></h3>
                             </div>
                         </div>
