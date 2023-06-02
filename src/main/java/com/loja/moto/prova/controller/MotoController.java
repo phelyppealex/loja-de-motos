@@ -38,6 +38,7 @@ public class MotoController {
         sessao = request.getSession();
 
         model.addAttribute("motos", motos);
+        model.addAttribute("mensagem", null);
         if(sessao.getAttribute("carrinho") != null){
             model.addAttribute(
                 "itensCarrinho",
@@ -146,14 +147,16 @@ public class MotoController {
         return "carrinho";
     }
 
-    @PostMapping("/finalizarCompra")
+    @GetMapping("/finalizarCompra")
     public String finalizarCompra(HttpSession sessao, HttpServletRequest request, Model model){
         sessao = request.getSession();
         List<Moto> motosCarrinho = (List)sessao.getAttribute("carrinho");
         
-        for(Moto m : motosCarrinho){
-            m.setDate(new Date());
-            this.service.update(m);
+        if(!motosCarrinho.isEmpty()){
+            for(Moto m : motosCarrinho){
+                m.setDate(new Date());
+                this.service.update(m);
+            }
         }
 
         sessao.invalidate();
