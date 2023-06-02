@@ -11,7 +11,7 @@
     <div th:replace="~{fragments/fragments :: navbar}"></div>
     <div th:replace="~{fragments/fragments :: header}"></div>
     
-    <form class="formulario" th:action="@{/admin/editar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
+    <form class="formulario" th:action="@{/salvar}" th:object="${moto}" method="POST" enctype="multipart/form-data">
         <h1>Editar cadastro</h1>
         
         <input type="hidden" th:field="*{id}">
@@ -49,6 +49,10 @@
             <tr>
                 <td class="coluna1"><label for="preco">Preço</label></td>
                 <td><input id="preco" type="text" th:field="*{preco}" placeholder="Ex.: 7500"/></td>
+            </tr>
+            <tr>
+                <td class="coluna1"><label for="imagem">Imagem</label></td>
+                <td><input type="file" name="file" id="imagem"></td>
             </tr>
         </table>
         

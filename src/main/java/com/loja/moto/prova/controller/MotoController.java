@@ -1,6 +1,5 @@
 package com.loja.moto.prova.controller;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,23 +16,25 @@ import com.loja.moto.prova.model.Moto;
 import com.loja.moto.prova.service.FileStorageService;
 import com.loja.moto.prova.service.MotoService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class MotoController {
     private FileStorageService fileStorageService;
     private MotoService service;
-    private List<Moto> carrinho;
 
-    public MotoController(FileStorageService fileStorageService, MotoService service) {
+    public MotoController(FileStorageService fileStorageService, MotoService service, HttpServletRequest request) {
         this.fileStorageService = fileStorageService;
         this.service = service;
-        this.carrinho = new ArrayList<Moto>();
     }
 
     @GetMapping({"/","index"})
     public String home(Model model){
         List<Moto> motos = service.findAll();
         model.addAttribute("motos", motos);
-        model.addAttribute("itensCarrinho", carrinho);
+
+        model.addAttribute("itensCarrinho");
         return "index";
     }
 
@@ -54,8 +55,16 @@ public class MotoController {
         dataUpload = dataUpload.replaceAll("/", "_");
         dataUpload = dataUpload.replaceAll(":", "_");
 
-        moto.setImagemURI(dataUpload + file.getOriginalFilename());
+        if(file != null)
+            moto.setImagemURI(dataUpload + file.getOriginalFilename());
+        
         moto.setNova(!chk_nova);
+        
+        if(moto.getId() != null){
+            service.update(moto);
+            return "/admin";
+        }
+        
         service.save(moto);
 
         this.fileStorageService.save(file, dataUpload);
@@ -64,13 +73,17 @@ public class MotoController {
     }
 
     @GetMapping("/admin")
-    public String rootListar(Model model){
+    public String rootListar(Model model, HttpServletRequest request, HttpSession sessao){
+        sessao = request.getSession();
         List<Moto> motos = service.findAll();
+        
         model.addAttribute("motos", motos);
+        model.addAttribute("itensCarrinho",sessao.getAttribute("carrinho"));
+        
         return "listar";
     }
 
-    @GetMapping("/admin/editarCadastro/{id}")
+    @GetMapping("/editar/{id}")
     public String editarCadastro(@PathVariable(name = "id") Integer id, Model model) throws Exception{
         Moto moto = this.service.findById(id);
 
@@ -78,30 +91,42 @@ public class MotoController {
         return "editar";
     }
 
-    @PostMapping("/admin/editar")
-    public String editar(@ModelAttribute Moto moto){
-        this.service.update(moto);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/deletar/{id}")
+    @GetMapping("/deletar/{id}")
     public String editar(@PathVariable(name = "id") Integer id) throws Exception{
         this.service.delete(id);
         return "redirect:/admin";
     }
 
     @GetMapping("/adicionarCarrinho/{id}")
-    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model) throws Exception {
-        Moto moto = service.findById(id);
+    public String adicionarCarrinho(@PathVariable("id") Integer id, Model model, HttpServletRequest request, HttpSession sessao) throws Exception {
+        List<Moto> motos;
+        Moto moto = this.service.findById(id);
+        sessao = request.getSession();
+        
+        if(sessao.getAttribute("carrinho") == null){
+            motos = new ArrayList<>();
+            sessao.setAttribute("carrinho", motos);
+        }else{
+            motos = (List)sessao.getAttribute("carrinho");
+        }
 
-        carrinho.add(moto);
-        model.addAttribute("itensCarrinho", carrinho);
+        if(!motos.contains(moto)){
+            motos.add(moto);
+            sessao.setAttribute("carrinho", motos);
+        }
+
+        model.addAttribute("itensCarrinho", motos);
+        model.addAttribute("motos", this.service.findAll());
         return "index";
     }
 
     @GetMapping("/verCarrinho")
-    public String verCarrinho(Model model){
-        model.addAttribute("itensCarrinho", carrinho);
+    public String verCarrinho(Model model, HttpServletRequest request, HttpSession sessao){
+        sessao = request.getSession();
+        model.addAttribute(
+            "itensCarrinho",
+            sessao.getAttribute("carrinho")
+        );
         return "carrinho";
     }
     
